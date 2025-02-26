@@ -8,12 +8,12 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 
-app.get('/',(req,res)=>{
-  res.send('working')
+app.get('/resgiter',(req,res)=>{
+  res.send('Regiter Yourself First')
   
 });
 
-app.post('/', async(req,res)=>{  // No space between async and parameters
+app.post('/register', async(req,res)=>{  
   let {username , password, phone , email}= req.body;
   let user = await userModel.create({
     username,
@@ -21,8 +21,25 @@ app.post('/', async(req,res)=>{  // No space between async and parameters
     phone, 
     password
   });
-  res.send(user);  // Does not add a status code
+  res.send(user);  
   console.log(user);
+});
+
+app.get('/login',(req,res)=>{
+  res.send('Login Yourself First')
+  
+});
+
+app.post('/login', async(req,res)=>{  
+  let user = userModel.findOne({email: req.body.email});
+  if(!user) {
+    console.log(user);
+    
+    return res.send('Something Went Wrong');
+  }
+  else {
+    res.send('You Can login!!');
+  }
 });
 
 PORT = 3002;
