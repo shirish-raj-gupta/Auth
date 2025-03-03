@@ -2,15 +2,12 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const app = express();
 const userModel = require('./models/user');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Registration Route
-app.get('/register', (req, res) => {
-  res.send('Register Yourself First');
-});
 
 app.post('/register', async (req, res) => {
   try {
@@ -42,10 +39,6 @@ app.post('/register', async (req, res) => {
   }
 });
 
-// Login Route
-app.get('/login', (req, res) => {
-  res.send('Login Yourself First');
-});
 
 app.post('/login', async (req, res) => {
   try {
