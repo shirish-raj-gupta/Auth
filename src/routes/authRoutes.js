@@ -5,7 +5,7 @@ const { verifyToken } = require('../controllers/verifyController');
 const router = express.Router();
 
 // ✅ Email Verification Route (GET method is fine)
-router.get('/verify/:token', verifyToken);
+router.get('/verify', verifyToken);
 
 // ✅ Authentication Routes
 router.post('/register', register);

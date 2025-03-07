@@ -3,19 +3,23 @@ const User = require('../models/user');
 
 const verifyToken = async (req, res) => {
   try {
-    const { token } = req.params;
+    const { userId, token } = req.body;
 
-    const verificationRecord = await VerificationToken.findOne({ token });
+    if (!userId || !token) {
+      return res.status(400).json({ success: false, message: 'User ID and token are required' });
+    }
+
+    const verificationRecord = await VerificationToken.findOne({ userId, token });
 
     if (!verificationRecord) {
       return res.status(400).json({ success: false, message: 'Invalid or expired token' });
     }
 
-    // Mark user as verified (if needed)
-    await User.findByIdAndUpdate(verificationRecord.userId, { isVerified: true });
+    // Mark user as verified
+    await User.findByIdAndUpdate(userId, { isVerified: true });
 
     // Delete verification token after success
-    await VerificationToken.deleteOne({ token });
+    await VerificationToken.deleteOne({ userId, token });
 
     res.status(200).json({ success: true, message: 'Email verified successfully' });
   } catch (error) {
